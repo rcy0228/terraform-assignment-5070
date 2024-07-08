@@ -54,7 +54,7 @@ variable "os_version" {
 }
 
 variable "linux_avs" {
-  default = "n01619463-linux-avs"
+  default = "n01655070  -linux-avs"
 }
 
 variable "rg_name" {}
