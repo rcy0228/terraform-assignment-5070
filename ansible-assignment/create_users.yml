@@ -1,0 +1,15 @@
+- name: Create multiple users with custom UIDs
+  hosts: linux
+  become: yes
+  vars_files:
+    - group_vars/linux.yml
+
+  tasks:
+    - name: Create user accounts
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        state: present
+        shell: /bin/bash
+      loop: "{{ users }}"
+

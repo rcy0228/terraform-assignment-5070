@@ -1,0 +1,35 @@
+---
+- name: Conditionally add a string to a file based on RHEL version and kernel version
+  hosts: linux
+  become: true
+  tasks:
+    - name: Gather system facts
+      setup:
+
+    - name: Display gathered facts
+      debug:
+        msg:
+          - "Distribution: {{ ansible_distribution }}"
+          - "Distribution Version: {{ ansible_distribution_version }}"
+          - "Kernel Version: {{ ansible_kernel }}"
+
+    - name: Ensure /tmp directory exists
+      file:
+        path: /tmp
+        state: directory
+
+    - name: Ensure /tmp/conditional file exists
+      file:
+        path: /tmp/conditional
+        state: touch
+
+    - name: Add string to /tmp/conditional file
+      blockinfile:
+        path: /tmp/conditional
+        block: |
+          This is my CentOS VM
+      when:
+        - ansible_distribution == "CentOS"
+        - ansible_distribution_version == "8.2"
+        - ansible_kernel.startswith("4.18.0-193")
+

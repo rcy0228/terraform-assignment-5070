@@ -1,0 +1,8 @@
+---
+- name: Remove specified packages
+  yum:
+    name: "{{ item }}"
+    state: absent
+  when: ansible_facts['os_family'] == "RedHat" or ansible_facts['os_family'] == "CentOS"
+  loop: "{{ packages_to_remove }}"
+

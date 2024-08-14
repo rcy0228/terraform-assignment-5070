@@ -1,0 +1,6 @@
+---
+- name: Set timezone to America/Toronto
+  timezone:
+    name: America/Toronto
+  when: ansible_facts['os_family'] == "RedHat" or ansible_facts['os_family'] == "CentOS"
+

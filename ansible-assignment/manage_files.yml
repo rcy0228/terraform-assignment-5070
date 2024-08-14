@@ -1,0 +1,31 @@
+---
+- name: Manage files on linux-vm1
+  hosts: linux-vm1
+  tasks:
+    - name: Create an empty file called locfile on the automation machine
+      local_action:
+        module: file
+        path: ./locfile
+        state: touch
+
+    - name: Copy locfile to the managed nodes under the /tmp directory
+      copy:
+        src: ./locfile
+        dest: /tmp/locfile
+        owner: n01655070
+        group: root
+        mode: '0444'
+
+    - name: Display the status of the /tmp/locfile file
+      command: ls -l /tmp/locfile
+      register: locfile_status
+
+    - name: Print the status of /tmp/locfile
+      debug:
+        var: locfile_status.stdout
+
+    - name: Create an empty file called emptyfile on the managed nodes in your home directory
+      file:
+        path: /home/n01655070/emptyfile
+        state: touch
+

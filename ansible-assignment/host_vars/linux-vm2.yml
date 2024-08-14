@@ -1,0 +1,4 @@
+mariadb_package_name: mariadb
+dracut_package_name: dracut
+snappy_package_name: snappy
+

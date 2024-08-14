@@ -1,0 +1,34 @@
+---
+- name: User and Group Management with External Variables
+  hosts: linux-vm1
+  become: yes
+
+  vars_files:
+    - vars/userinfo.yml
+
+  tasks:
+    - name: Create group {{ grouplist1 }}
+      group:
+        name: "{{ grouplist1 }}"
+        state: present
+
+    - name: Create group {{ grouplist2 }}
+      group:
+        name: "{{ grouplist2 }}"
+        state: present
+
+    - name: Create user {{ userlist1 }} with UID 2800 and supplementary membership to {{ grouplist1 }}
+      user:
+        name: "{{ userlist1 }}"
+        uid: "{{ uid1 }}"
+        groups: "{{ grouplist1 }}"
+        append: yes
+
+    - name: Create user {{ userlist2 }} with UID 2900, shell /bin/bash, home directory matching their username under /home, and supplementary membership to {{ grouplist2 }}
+      user:
+        name: "{{ userlist2 }}"
+        uid: "{{ uid2 }}"
+        shell: /bin/bash
+        home: "/home/{{ userlist2 }}"
+        groups: "{{ grouplist2 }}"
+        append: yes

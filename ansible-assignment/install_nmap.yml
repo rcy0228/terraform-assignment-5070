@@ -1,0 +1,17 @@
+---
+- name: Install nmap if defined
+  hosts: linux-vm1
+  become: true
+  vars_files:
+    - vars/nmap.yml
+  tasks:
+    - name: Install nmap package
+      yum:
+        name: nmap
+        state: present
+      when: install_nmap | bool
+
+    - name: Display nmap installation status
+      debug:
+        msg: "nmap package installation was {{ 'successful' if install_nmap | bool else 'skipped' }}"
+

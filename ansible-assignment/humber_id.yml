@@ -1,0 +1,10 @@
+---
+- name: Show nodes with specific HumberID
+  hosts: linux
+  become: true
+  tasks:
+    - name: Display the HumberID of the node
+      debug:
+        msg: "Node {{ inventory_hostname }} has HumberID: {{ humberid | default('Not defined') }}"
+      when: humberid is defined
+

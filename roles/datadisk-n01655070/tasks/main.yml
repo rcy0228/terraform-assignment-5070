@@ -1,0 +1,32 @@
+---
+- name: Create partitions
+  parted:
+    device: "{{ item.device }}"
+    number: "{{ item.number }}"
+    state: present
+    part_start: "{{ item.part_start }}"
+    part_end: "{{ item.part_end }}"
+    unit: MiB  
+  loop: "{{ disks_info }}"
+
+- name: Format the partitions
+  filesystem: 
+    fstype: "{{ item.fstype }}"
+    dev: "{{ item.partition }}"
+  loop: "{{ disks_info }}"
+
+- name: Create directories for mounting
+  file: 
+    path: "{{ item.path }}"
+    state: directory
+    mode: '0755'
+  loop: "{{ disks_info }}"
+
+- name: Mount the partitions
+  mount: 
+    path: "{{ item.path }}"
+    src: "{{ item.partition }}"
+    fstype: "{{ item.fstype }}"
+    state: mounted
+  loop: "{{ disks_info }}"
+

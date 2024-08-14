@@ -1,0 +1,11 @@
+---
+- name: Install ypserv package
+  hosts: linux
+  become: yes
+  vars_files:
+    - group_vars/linux.yml
+  tasks:
+    - name: Install ypserv package
+      yum:
+        name: "{{ package_ypserv }}"
+        state: present

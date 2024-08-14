@@ -1,0 +1,18 @@
+---
+- name: Install Packages Based on Disk Space
+  hosts: linux-vm2
+  tasks:
+    - name: Get disk space information
+      ansible.builtin.shell:
+        cmd: df --output=avail /
+      register: disk_space
+
+    - name: Install mariadb, dracut, and snappy packages
+      ansible.builtin.package:
+        name:
+          - "{{ mariadb_package_name }}"
+          - "{{ dracut_package_name }}"
+          - "{{ snappy_package_name }}"
+        state: present
+      when: disk_space.stdout_lines[1] | int >= 2 * 1024 * 1024  # 2GB in KB
+

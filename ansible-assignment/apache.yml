@@ -1,0 +1,34 @@
+---
+- name: Install and configure Apache web server
+  hosts: linux-vm1
+  become: yes
+
+  tasks:
+    - name: Install Apache web server
+      ansible.builtin.yum:
+        name: httpd
+        state: present
+
+    - name: Get the hostname
+      ansible.builtin.command:
+        cmd: hostname
+      register: hostname_result
+
+    - name: Create /var/www/html/index.html with hostname
+      ansible.builtin.copy:
+        content: "Hostname: {{ hostname_result.stdout }}"
+        dest: /var/www/html/index.html
+        owner: apache
+        group: apache
+        mode: '0644'
+
+    - name: Enable Apache service to start on boot
+      ansible.builtin.systemd:
+        name: httpd
+        enabled: yes
+
+    - name: Start Apache service
+      ansible.builtin.systemd:
+        name: httpd
+        state: started
+

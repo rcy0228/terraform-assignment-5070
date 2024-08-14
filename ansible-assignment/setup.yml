@@ -1,0 +1,21 @@
+---
+- name: Get package version on CentOS/RedHat
+  hosts: linux-vm1
+  become: true
+  tasks:
+    - name: Check if the setup package is installed
+      yum:
+        name: setup
+        state: present
+      register: setup_package
+
+    - name: Get setup package version
+      command: rpm -q --queryformat "%{VERSION}-%{RELEASE}" setup
+      register: setup_version
+      when: setup_package is defined and setup_package.changed == false
+
+    - name: Display the version of the setup package
+      debug:
+        msg: "Version of the setup package: {{ setup_version.stdout }}"
+      when: setup_version is defined
+

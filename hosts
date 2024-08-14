@@ -1,0 +1,28 @@
+[linux]
+n01655070-c-vm1.canadacentral.cloudapp.azure.com ansible_user=n01655070 ansible_ssh_private_key_file=~/.ssh/id_rsa ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+n01655070-c-vm2.canadacentral.cloudapp.azure.com ansible_user=n01655070 ansible_ssh_private_key_file=~/.ssh/id_rsa ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+n01655070-c-vm3.canadacentral.cloudapp.azure.com ansible_user=n01655070 ansible_ssh_private_key_file=~/.ssh/id_rsa ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[linux:vars]
+ansible_become=true
+ansible_become_method=sudo
+ansible_become_user=root
+ansible_become_ask_pass=false
+
+[windows]
+n01655070-w-vm1.canadacentral.cloudapp.azure.com
+
+[os:children]
+linux
+windows
+
+[windows:vars]
+ansible_user=winadm
+ansible_password=Winadm!23
+ansible_connection=winrm
+ansible_port=5985
+ansible_winrm_transport=ntlm
+ansible_winrm_server_cert_validation=ignore
+ansible_become=false
+
+

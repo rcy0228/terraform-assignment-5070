@@ -1,0 +1,28 @@
+---
+- name: Create an empty file called locfile on the automation machine
+  local_action:
+    module: file
+    path: ./locfile
+    state: touch
+
+- name: Copy locfile to the managed nodes under the /tmp directory
+  copy:
+    src: ./locfile
+    dest: "{{ locfile_path }}"
+    owner: "{{ locfile_owner }}"
+    group: "{{ locfile_group }}"
+    mode: "{{ locfile_mode }}"
+
+- name: Display the status of the /tmp/locfile file
+  command: ls -l "{{ locfile_path }}"
+  register: locfile_status
+
+- name: Print the status of /tmp/locfile
+  debug:
+    var: locfile_status.stdout
+
+- name: Create an empty file called emptyfile on the managed nodes in your home directory
+  file:
+    path: "{{ emptyfile_path }}"
+    state: touch
+

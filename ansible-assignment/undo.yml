@@ -1,0 +1,31 @@
+---
+- name: Undo user and group creation
+  hosts: linux-vm1
+  become: yes
+  tasks:
+    - name: Remove user100
+      user:
+        name: user100
+        state: absent
+        remove: yes
+      ignore_errors: yes
+
+    - name: Remove user200
+      user:
+        name: user200
+        state: absent
+        remove: yes
+      ignore_errors: yes
+
+    - name: Remove group10
+      group:
+        name: group100
+        state: absent
+      ignore_errors: yes
+
+    - name: Remove group200
+      group:
+        name: group200
+        state: absent
+      ignore_errors: yes
+

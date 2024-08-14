@@ -1,0 +1,11 @@
+---
+- name: Manage software on Linux hosts
+  hosts: linux
+  become: yes
+  roles:
+    - package_remove
+    - package_install
+    - patching
+    - profile_mgmt
+    - timezone
+    - syslog_updates
